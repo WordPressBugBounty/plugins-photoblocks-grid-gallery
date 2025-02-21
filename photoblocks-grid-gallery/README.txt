@@ -2,8 +2,8 @@
 Contributors: wpchill, silkalns
 Tags: gallery, grid gallery, best gallery plugin, free gallery, gallery plugin, gallery grid plugin, masonry, photo gallery, image gallery, social gallery, portfolio gallery, lightbox, justified gallery
 Requires at least: 5.2
-Tested up to: 6.6
-Stable tag: 1.3.0
+Tested up to: 6.7
+Stable tag: 1.3.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,10 @@ Check the console of the browser and look if you see errors, if case please open
 Currently galleries made with Envira, FooGallery, Instagram, NextGen, JetPack, Modula, etc cannot be imported.
 
 == Changelog ==
+
+= 1.3.1 - 05/11/2024 =
+Changed: Update freemius framework to latest version
+
 = 1.3.0 - 07/07/2023 =
 Changed: Update freemius framework to latest version
 

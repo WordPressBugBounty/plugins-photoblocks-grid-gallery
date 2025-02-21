@@ -314,7 +314,25 @@ PBTicker.init();
     }
 
     function serializeMobileLayouts() {  
-      
+      /* <fs_premium_only> */    
+      PBConsole.log("serializeMobileLayouts()");
+      $(".js-mobile-layouts-list").each(function() {
+        var field = $(this).data("field");
+        var all = [];
+        $(this)
+          .find("tr.ml-values")
+          .each(function() {
+            var cols = parseInt($(this).find("[data-ml-cols]").val());
+            var w = parseInt($(this).find("[data-ml-w]").val());
+            //var square = $(this).find("[data-ml-square]").get(0).checked;
+            if (cols && w) all.push({
+              cols: cols, w: w //, square: square
+            });
+          });
+
+        $('[name="' + field + '"]').val(JSON.stringify(all));
+      });
+      /* </fs_premium_only> */
     }
 
     function serializeLists() {
@@ -368,7 +386,28 @@ PBTicker.init();
     }
 
     function addMobileLayout(field, value) {
-        
+      /* <fs_premium_only> */  
+      var $tr = $('<tr class="ml-values"></tr>');
+      $tr.append("<td><input type='number' data-ml-cols placeholder='e.g.: 3'></td>");
+      $tr.append("<td><input type='number' data-ml-w placeholder='e.g.: 800'></td>");
+      //$tr.append("<td class=''><input data-ml-square type='checkbox'></td>");
+      $tr.append("<td class='pb-icon-col'><a href=\"#\"><i class=\"pb-cancel-circled\"></i></a></td>");
+
+      if(value) {
+        $tr.find("[data-ml-cols]").val(value.cols);
+        $tr.find("[data-ml-w]").val(value.w);
+        //$tr.find("[data-ml-square]").get(0).checked = value.square;
+      }
+
+      $tr.find("a").click(function(e) {
+        e.preventDefault();
+        $tr.fadeOut("fast", function() {
+          $(this).remove();
+        });
+        serializeMobileLayouts();
+      });
+      $("#mobile-layout-" + field).append($tr);
+      /* </fs_premium_only> */  
     }
 
     function postLoadDuties() {
@@ -643,7 +682,13 @@ PBTicker.init();
       openBulk: function () {
         $("#modal-bulk .blocks").empty();
         
-        
+        /* <fs_premium_only> */
+        $("#modal-bulk .filters").empty();
+        var ft = $('[name="filters"]').val();
+        ft.split(";").map(function (f) {
+          $("#modal-bulk .filters").append("<label><input type='checkbox' value='"+f+"'> " + f + "</label>");
+        });
+        /* </fs_premium_only> */
 
 
         $(".pb-selected").each(function (i) {
@@ -675,10 +720,54 @@ PBTicker.init();
         if(type == 'image')
           PhotoBlocks.addImages(position);
         
-        
+        /* <fs_premium_only> */
+        if(type == 'text')
+          PhotoBlocks.addTextBlock(position);
+        if(type == 'post')
+          PhotoBlocks.addPostBlock(position);
+        /* </fs_premium_only> */
       },
 
-      
+      /* <fs_premium_only> */
+      listGoogleFonts: function (key) {
+        var url = "https://www.googleapis.com/webfonts/v1/webfonts?key=" + key;
+        $.getJSON(url)
+          .done(function( data ) {
+
+            var subsets = [];
+            data.items.map(function (item) {
+
+              item.subsets.map(function (subset) {
+                if($.inArray(subset, subsets) < 0)
+                  subsets.push(subset);
+              });              
+            });
+
+            $(".js-load-fonts").each(function () {
+              var $el = $(this);
+              var code = $el.attr("name");
+              
+              $.each( data.items, function( i, item ) {
+                for(var v in item.files) {
+                  var variant = v;
+                  if(variant.indexOf('regular') > 0 || variant.indexOf('italic') > 0) {
+                    variant = variant.replace("italic", " italic");
+                    variant = variant.replace("regular", " regular");
+                  }
+                  var val = item.family + "," + v;
+                  var selected = _data[code] == val ? "selected" : "";
+                  $el.append("<option value='"+ val +"' "+ selected +">"+ item.family  + " " + variant + "</option>");
+                }
+              });
+
+              $el.chosen({
+                width: "400px"
+              });
+            });
+            
+          });
+      }
+      /* </fs_premium_only> */
     };
   })();
 

@@ -82,13 +82,200 @@ var qualifyURL = function (url) {
         }	
       }
     };
-    
+    /* <fs_premium_only> */
+    var premium_effects = {      
+      pop: {
+        animeOpts: {
+          targets : ".pb-block",
+          duration: function(t,i) {
+            return 600 + i*75;
+          },
+          easing: 'easeOutExpo',
+          delay: function(t,i) {
+            return i*50;
+          },
+          opacity: {
+            value: [0.7,1],
+            easing: 'linear'
+          },
+          scale: [0,1]
+        }	
+      },
+      slideFromBottom: {
+        animeOpts: {
+          targets : ".pb-block",
+          duration: 800,
+          easing: 'easeOutExpo',          
+          opacity: {
+            value: [0,1],
+            duration: 800,
+            easing: 'linear'
+          },
+          translateY: [400,0]
+        }
+      },
+      slideFromTop: {
+        animeOpts: {
+          targets : ".pb-block",
+          duration: 800,
+          easing: 'easeOutExpo',          
+          opacity: {
+            value: [0,1],
+            duration: 800,
+            easing: 'linear'
+          },
+          translateY: [-400,0]
+        }
+      },
+      slideFromLeft: {
+        animeOpts: {
+          targets : ".pb-block",
+          duration: 800,
+          easing: [0.1,1,0.3,1],
+          delay: function(t,i) {
+            return i * 20;
+          },
+          opacity: {
+            value: [0,1],
+            duration: 600,
+            easing: 'linear'
+          },
+          translateX: [-500,0],
+          rotateZ: [15,0]
+        }
+      },
+      elastic: {
+        animeOpts: {
+          targets : ".pb-block",
+          duration: 900,
+          elasticity: 500,
+          delay: function(t,i) {
+            return i*15;
+          },
+          opacity: {
+            value: [0.5,1],
+            duration: 250,
+            easing: 'linear'
+          },
+          translateX: function() {
+            return [anime.random(0,1) === 0 ? 100 : -100,0];
+          },
+          translateY: function() {
+            return [anime.random(0,1) === 0 ? 100 : -100,0];
+          }
+        }
+      },
+      elastic2: {        
+        animeOpts: {
+          targets : ".pb-image",
+          duration: 1500,
+          elasticity: 400,
+          delay: function(t,i) {
+            return i*75;
+          },
+          opacity: {
+            value: [0.6,1],
+            duration: 250,
+            easing: 'linear'
+          },
+          rotateX: [-90,0]
+        }
+      },      
+      wobble: {
+        animeOpts: {
+          targets: ".pb-block",
+          duration: 800,
+          elasticity: 600,
+          delay: function(t,i) {
+            return i*100;
+          },
+          opacity: {
+            value: [.5,1],
+            duration: 250,
+            easing: 'linear'
+          },
+          scaleX: {
+            value: [0.4,1]
+          },
+          scaleY: {
+            value: [0.6,1],
+            duration: 1000
+          }
+        }
+      },
+      deal: {
+        animeOpts: {
+          targets: ".pb-block",
+          duration: 600,
+          easing: 'easeOutExpo',
+          delay: function(t,i) {
+            return i*100;
+          },
+          opacity: {
+            value: [0,1],
+            duration: 100,
+            easing: 'linear'
+          },
+          translateX: function(t,i) {
+            var docScrolls = {left : document.body.scrollLeft + document.documentElement.scrollLeft},
+              x1 = window.innerWidth/2 + docScrolls.left,
+              tBounds = t.getBoundingClientRect(),
+              x2 = tBounds.left +docScrolls.left + tBounds.width/2;
+  
+            return [x1-x2,0];
+          },
+          translateY: function(t,i) {
+            var docScrolls = {top : document.body.scrollTop + document.documentElement.scrollTop},
+              y1 = window.innerHeight + docScrolls.top,
+              tBounds = t.getBoundingClientRect(),
+              y2 = tBounds.top + docScrolls.top + tBounds.height/2;
+  
+            return [y1-y2,0];
+          },
+          rotate: function(t,i) {
+            var x1 = window.innerWidth/2,
+              tBounds = t.getBoundingClientRect(),
+              x2 = tBounds.left + tBounds.width/2;
+  
+            return [x2 < x1 ? 90 : -90,0];
+          },
+          scale: [0,1]
+        }
+      },
+      stretch: {
+        animeOpts: {
+          targets: ".pb-image",
+          duration: 500,
+          easing: 'easeOutBack',
+          delay: function(t,i) {
+            return i * 100;
+          },
+          opacity: {
+            value: [0,1],
+            easing: 'linear'
+          },
+          translateY: [400,0],
+          scaleY: [
+            {value: [3,0.6], delay: function(t,i) {return i * 100 + 120;}, duration: 300, easing: 'easeOutExpo'},
+            {value: [0.6,1], duration: 1400, easing: 'easeOutElastic'}
+          ],
+          scaleX: [
+            {value: [0.9,1.05], delay: function(t,i) {return i * 100 + 120;}, duration: 300, easing: 'easeOutExpo'},
+            {value: [1.05,1], duration: 1400, easing: 'easeOutElastic'}
+          ]
+        }
+      }
+    };
+    this.effects = $.extend(this.effects, premium_effects);
+    /* </fs_premium_only> */
 
     if (this.init()) {
       this.load_images(this.$blocks);
       this.setup_social();
 
-      
+      /* <fs_premium_only> */
+      this.setup_filters();
+      /* </fs_premium_only> */
     }
   };
 
@@ -199,7 +386,92 @@ var qualifyURL = function (url) {
     if (this.settings.debug) console.warn("PB > ", data);
   };
 
+  /* <fs_premium_only> */
+  PhotoBlocks.prototype.setup_filters = function () {
+    if(this.$grid.find(".pb-filters").length) {
+      var self = this;
+      var $blocks = this.$blocks;
+      var $filters = this.$grid.find(".pb-filters a");
+
+      var selected = "";
+      
+      $filters.each(function () {
+        $(this).click(function () {
+
+          if($(this).hasClass("selected"))
+            return;
+
+          var ft = $(this).data("filter");
+
+          $filters.removeClass("selected");
+          $(this).addClass("selected");
+
+          var pkry = self.$grid.find(".pb-blocks").data('packery');
+          if(ft == "pbf-all") {
+            var hidden = $blocks.filter(".pb-filtered");
+            self.$grid.find(".pb-blocks").data('packery').unignore(hidden);
+            $blocks.removeClass("pb-filtered");
+            $blocks.find("a").each(function () {
+              if($(this).data("fancybox-rel"))
+                $(this).attr("data-fancybox", $(this).data("fancybox-rel"));
+            });                       
+            self.$grid.find(".pb-blocks").packery('layout');
+            $blocks.show();
+          } else {
+            var to_hide = [];
+            var to_show = [];
+            $blocks.each(function () {
+              var filters = $(this).data("filters").split(" ");
+              var $a = $(this).find("a");
+              
+              if($.inArray(ft, filters) < 0) {
+                //$(this).addClass("pb-filtered");
+                
+                $a.data("fancybox-rel", $a.data("fancybox"));
+                $a.removeAttr("data-fancybox");
+                $(this).hide();
+                to_hide.push(this);
+              } else {
+                $(this).removeClass("pb-filtered");                
+                if($a.data("fancybox-rel")) {
+                  $a.attr("data-fancybox", $a.data("fancybox-rel"));                  
+                  //self.apply_effects($(this));
+                }
+                to_show.push(this);
+                $(this).show();
+              }
+            });
+
+            if(self.packery_init) {
+              pkry.ignore(to_hide);
+              pkry.unignore(to_show);
+            }
+          }  
+          if(self.packery_init) {
+            pkry.layout();
+          }
+        });
+      });
+
+      this.startup_filters();
+    }
+  };
   
+  PhotoBlocks.prototype.startup_filters = function () {
+    var fstart = location.hash;
+    if(fstart == "#pbf-all") {
+      this.$grid.find(".pb-filters a.pbf-all").addClass("selected");
+    } else {
+      var $filters = this.$grid.find(".pb-filters a");
+      $filters.each(function (i, o) {
+        if($(this).attr("href") == location.hash) {
+            $(o).click();
+        }        
+      });
+      this.init_packery();
+    }
+  };
+  /* </fs_premium_only> */
 
   PhotoBlocks.prototype.cellSize = function() {    
     var self = this;
@@ -398,7 +670,24 @@ var qualifyURL = function (url) {
     if(w < self.settings.disable_below)
       return { type: "stack" };
     
-    
+    /* <fs_premium_only> */  
+    self.settings.mobile_layout.sort(function (a, b) {
+      if(a.w < b.w)
+        return -1;
+
+      if(a.w > b.w)
+        return 1;
+
+      return 0;
+    });
+    $.each(self.settings.mobile_layout, function () {
+      if(this.w > w) {
+        self.print_i("Found mobile layout: " + this.w + " (" + this.cols + " cols)");
+        mode = { type: "mobile", layout: this };
+        return false;
+      }
+    });
+    /* </fs_premium_only> */
     return mode;
   }
 
@@ -596,7 +885,15 @@ var qualifyURL = function (url) {
     if(! self.settings.lazy) {
       self.load_images(self.$blocks);
     }
-    
+    /* <fs_premium_only> */
+    var _debounce = 0;
+    $(window).scroll(function () {
+      clearTimeout(_debounce);
+      _debounce = setTimeout(function () {
+        self.load_images(self.$blocks);
+      }, 100);
+    });
+    /* </fs_premium_only> */
 
     if(this.settings.on.after)
       this.settings.on.after();
