@@ -684,40 +684,7 @@ var Utils = null;
         refresh(true);
       },
 
-      /* <fs_premium_only> */
-      addTextBlock: function (position) {
-        PBAdmin.popup('add-blocks', true)
-        var defValues = {
-          geometry: {
-            colspan: 1,
-            rowspan: 1
-          },
-          type: "text"
-        };
-
-        defValues = $.extend(true, {}, _block_conf, defValues);
-
-        var $b = makeBlock(defValues);
-        insertBlock()[position]($b, true);
-        refresh(true);
-      },
-      addPostBlock: function (position) {
-        PBAdmin.popup('add-blocks', true)
-        var defValues = {
-          geometry: {
-            colspan: 1,
-            rowspan: 1
-          },
-          type: "post"
-        };
-
-        defValues = $.extend(true, {}, _block_conf, defValues);
-
-        var $b = makeBlock(defValues);
-        insertBlock()[position]($b, true);
-        refresh(true);
-      },
-      /* </fs_premium_only> */
+      
       deleteSelectedBlock: function () {
         deleteBlocks(true);
       },
@@ -776,15 +743,7 @@ var Utils = null;
 
         initPackery();
       },
-      /* <fs_premium_only> */
-      updateSource: function () {
-        if(settings.source != getProperty("source")) {
-          if(confirm("The current grid will be erased, continue?")) {
-            PBAdmin.deleteAllBlocks();
-          }
-        }
-      },
-      /* </fs_premium_only> */
+      
       openDrawer: function(panel) {
         $("#pb-main .submenu li a").removeClass("active");
 
