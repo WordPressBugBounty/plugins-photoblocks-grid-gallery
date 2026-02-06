@@ -13,7 +13,7 @@ class Photoblocks_Settings {
     public $fields;
 
     public function __construct() {
-        $this->setup_fields();
+        add_action( 'admin_init', array($this, 'setup_fields') );
     }
 
     /**
@@ -198,7 +198,7 @@ class Photoblocks_Settings {
      *
      * @since    1.0.0
      */
-    private function setup_fields() {
+    public function setup_fields() {
         $this->fields = array();
         $this->fields['gallery'] = array();
         $this->fields['lightbox'] = array();
@@ -1047,39 +1047,41 @@ class Photoblocks_Settings {
             'help_custom_css',
             array()
         );
-        $this->add_field(
-            'customisations',
-            esc_html__( 'General', 'photoblocks' ),
-            esc_html__( 'Event: before gallery', 'photoblocks' ),
-            'custom_event_before',
-            'textarea',
-            array(
-                'description' => esc_html__( 'JavaScript code to run before the plugin starts building the gallery. Write CSS code without <script></script> tags.', 'photoblocks' ),
-                'default'     => '',
-            )
-        );
-        $this->add_field(
-            'customisations',
-            esc_html__( 'General', 'photoblocks' ),
-            esc_html__( 'Event: refreshed gallery', 'photoblocks' ),
-            'custom_event_refresh',
-            'textarea',
-            array(
-                'description' => wp_kses_post( __( 'JavaScript code to run after the plugin refreshed the gallery. Write CSS code without <script></script> tags.', 'photoblocks' ) ),
-                'default'     => '',
-            )
-        );
-        $this->add_field(
-            'customisations',
-            esc_html__( 'General', 'photoblocks' ),
-            esc_html__( 'Event: after gallery', 'photoblocks' ),
-            'custom_event_after',
-            'textarea',
-            array(
-                'description' => wp_kses_post( __( 'JavaScript code to run after the plugin complete building the gallery. Write CSS code without <script></script> tags.', 'photoblocks' ) ),
-                'default'     => '',
-            )
-        );
+        if ( current_user_can( 'unfiltered_html' ) ) {
+            $this->add_field(
+                'customisations',
+                esc_html__( 'General', 'photoblocks' ),
+                esc_html__( 'Event: before gallery', 'photoblocks' ),
+                'custom_event_before',
+                'textarea',
+                array(
+                    'description' => esc_html__( 'JavaScript code to run before the plugin starts building the gallery. Write CSS code without <script></script> tags.', 'photoblocks' ),
+                    'default'     => '',
+                )
+            );
+            $this->add_field(
+                'customisations',
+                esc_html__( 'General', 'photoblocks' ),
+                esc_html__( 'Event: refreshed gallery', 'photoblocks' ),
+                'custom_event_refresh',
+                'textarea',
+                array(
+                    'description' => wp_kses_post( __( 'JavaScript code to run after the plugin refreshed the gallery. Write CSS code without <script></script> tags.', 'photoblocks' ) ),
+                    'default'     => '',
+                )
+            );
+            $this->add_field(
+                'customisations',
+                esc_html__( 'General', 'photoblocks' ),
+                esc_html__( 'Event: after gallery', 'photoblocks' ),
+                'custom_event_after',
+                'textarea',
+                array(
+                    'description' => wp_kses_post( __( 'JavaScript code to run after the plugin complete building the gallery. Write CSS code without <script></script> tags.', 'photoblocks' ) ),
+                    'default'     => '',
+                )
+            );
+        }
         /*$this->add_field("customisations", "General", "Filter for blocks", "custom_blocks_filter", "textarea", array(
         			"description" => "",
         			"default" => "",

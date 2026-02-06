@@ -130,10 +130,10 @@ class PhotoBlock {
 
 	public function get_alt() {
 		if ( isset( $this->image->alt ) && ! empty( $this->image->alt ) ) {
-			return $this->image->alt;
+			return esc_attr( $this->image->alt );
 		}
 
-		return $this->get_title();
+		return  esc_attr( $this->get_title() );
 	}
 
 	public function get_title( $fallback_description = true ) {

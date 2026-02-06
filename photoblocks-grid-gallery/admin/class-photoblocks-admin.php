@@ -208,6 +208,11 @@ class Photoblocks_Admin {
                 'success' => false,
                 'id'      => $id,
             );
+            if ( !current_user_can( 'unfiltered_html' ) ) {
+                unset($data['custom_event_before']);
+                unset($data['custom_event_refresh']);
+                unset($data['custom_event_after']);
+            }
             $wpdb->show_errors = true;
             if ( $id > 0 ) {
                 $r['success'] = $wpdb->update( $wpdb->photoblocks, array(

@@ -2,8 +2,8 @@
 Contributors: wpchill, silkalns
 Tags: gallery, grid gallery, best gallery plugin, free gallery, gallery plugin, gallery grid plugin, masonry, photo gallery, image gallery, social gallery, portfolio gallery, lightbox, justified gallery
 Requires at least: 5.2
-Tested up to: 6.8
-Stable tag: 1.3.2
+Tested up to: 6.9
+Stable tag: 1.3.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -120,7 +120,13 @@ Check the console of the browser and look if you see errors, if case please open
 
 Currently galleries made with Envira, FooGallery, Instagram, NextGen, JetPack, Modula, etc cannot be imported.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Gallery PhotoBlocks plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fb4cb-6edd-4ea1-ae4f-dea4773f868f). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin."
+
 == Changelog ==
+= 1.3.3 - 01/16/2026 =
+Fixed: Security update.
 
 = 1.3.2 - 08/25/2025 =
 Fixed: Sanitization and escaping

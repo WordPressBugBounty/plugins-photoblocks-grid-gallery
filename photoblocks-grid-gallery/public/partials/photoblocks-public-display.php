@@ -393,7 +393,7 @@ if ( $this->fonts_to_load( $data_id ) ) {
     link.type = "text/css";
     link.rel = "stylesheet";
     link.href = "<?php 
-    echo $this->fonts_to_load( $data_id );
+    echo esc_url( $this->fonts_to_load( $data_id ) );
     ?>";
 
     head.appendChild(link);
