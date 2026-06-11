@@ -274,19 +274,19 @@ foreach ( $blocks as $block ) {
         echo wp_kses_post( $block->get_lightbox_caption() );
         ?>"
                 rel="<?php 
-        echo $block->click->rel;
+        echo esc_attr( $block->click->rel );
         ?>"
                 <?php 
         if ( $block->has_link_or_lightbox() ) {
             ?>
                     target="<?php 
-            echo $block->click->target;
+            echo esc_attr( $block->click->target );
             ?>"
                 <?php 
         }
         ?>
                     href="<?php 
-        echo $block->get_link();
+        echo esc_attr( $block->get_link() );
         ?>">
             <?php 
     }

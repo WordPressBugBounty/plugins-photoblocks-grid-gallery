@@ -10,10 +10,10 @@
  * @subpackage Photoblocks/includes
  */
 class Photoblocks_Settings {
-    public $fields;
+    public $fields = array();
 
     public function __construct() {
-        add_action( 'admin_init', array($this, 'setup_fields') );
+        add_action( 'init', array($this, 'setup_fields') );
     }
 
     /**
