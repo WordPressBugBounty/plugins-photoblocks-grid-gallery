@@ -20,6 +20,42 @@ class PhotoBlock {
 
 	public $gallery_id;
 
+	/**
+	 * Validate a value against the set of CSS color syntaxes we support
+	 * (hex, rgb()/rgba(), hsl()/hsla(), keyword). Anything that doesn't
+	 * match one of these strict allow-list patterns is rejected outright,
+	 * since a CSS color has no legitimate use for quotes, semicolons,
+	 * parens with arbitrary content, etc.
+	 *
+	 * @param mixed $value
+	 * @return string Sanitized color, or '' if invalid.
+	 */
+	public static function sanitize_color( $value ) {
+		if ( ! is_string( $value ) ) {
+			return '';
+		}
+
+		$value = trim( $value );
+
+		if ( $value === '' ) {
+			return '';
+		}
+
+		if ( preg_match( '/^#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $value ) ) {
+			return $value;
+		}
+
+		if ( preg_match( '/^(?:rgb|rgba|hsl|hsla)\(\s*[\d.]+%?\s*,\s*[\d.]+%?\s*,\s*[\d.]+%?\s*(?:,\s*[\d.]+%?\s*)?\)$/i', $value ) ) {
+			return $value;
+		}
+
+		if ( preg_match( '/^[a-zA-Z]{3,20}$/', $value ) ) {
+			return $value;
+		}
+
+		return '';
+	}
+
 	public function __construct( $gallery, $data, $settings ) {
 		$this->gallery  = $gallery;
 		$this->settings = $settings;
@@ -111,9 +147,11 @@ class PhotoBlock {
 	}
 
 	public function custom_styles( $field ) {
-		$style = array();
-		if ( ! empty( $this->caption->{$field}->color ) ) {
-			$style['color'] = $this->caption->{$field}->color;
+		$style     = array();
+		$raw_color = isset( $this->caption->{$field}->color ) ? $this->caption->{$field}->color : '';
+		$color     = self::sanitize_color( $raw_color );
+		if ( ! empty( $color ) ) {
+			$style['color'] = $color;
 		}
 
 		if ( ! empty( $this->caption->{$field}->size ) ) {
@@ -178,7 +216,9 @@ class PhotoBlock {
 	}
 
 	public function get_overlay_bg() {
-		return $this->caption->background->color;
+		$raw_color = isset( $this->caption->background->color ) ? $this->caption->background->color : '';
+
+		return self::sanitize_color( $raw_color );
 	}
 
 	public function colspan() {
@@ -206,9 +246,20 @@ class PhotoBlock {
 	}
 
 	public function style() {
-		$style    = array();
-		$bg_key   = $this->type == 'image' ? 'block_background_color' : 'block_text_background_color';
-		$style [] = 'background-color=' . $this->caption->background->color ? $this->caption->background->color : $this->gallery[ $bg_key ];
+		$style  = array();
+		$bg_key = $this->type == 'image' ? 'block_background_color' : 'block_text_background_color';
+
+		$raw_color = isset( $this->caption->background->color ) ? $this->caption->background->color : '';
+		$color     = self::sanitize_color( $raw_color );
+
+		if ( $color === '' ) {
+			$fallback = isset( $this->gallery[ $bg_key ] ) ? $this->gallery[ $bg_key ] : '';
+			$color    = self::sanitize_color( $fallback );
+		}
+
+		if ( $color !== '' ) {
+			$style[] = 'background-color:' . $color;
+		}
 
 		return implode( ';', $style );
 	}

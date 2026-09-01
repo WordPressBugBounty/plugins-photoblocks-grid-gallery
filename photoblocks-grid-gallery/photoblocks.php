@@ -4,7 +4,7 @@
  * Plugin Name:              Gallery PhotoBlocks
  * Plugin URI:               https://photoblocks.io/
  * Description:              Build your unique photo gallery
- * Version:                  1.3.4
+ * Version:                  1.3.5
  * Author:                   WPChill
  * Author URI:               https://wpchill.com
  * Requires:                 5.2 or higher
@@ -13,9 +13,9 @@
  * Requires PHP:             5.6
  * Text Domain:             photoblocks
  * Domain Path:             /languages
- * Tested up to: 6.9
+ * Tested up to: 7.1
  * Requires PHP: 5.6
- * Stable tag: 1.3.4
+ * Stable tag: 1.3.5
  * Copyright 2018-2019       GreenTreeLabs     diego@greentreelabs.net
  * Copyright 2019-2020       MachoThemes       office@machothemes.com
  * SVN commit with proof of ownership transfer: https://plugins.trac.wordpress.org/changeset/2163480/photoblocks-grid-gallery
@@ -33,7 +33,7 @@ if ( !defined( 'PHOTOBLOCKS_DIR' ) ) {
 if ( !function_exists( 'photoblocks_starter' ) ) {
     function photoblocks_starter() {
         if ( !defined( 'PHOTOBLOCKS_V' ) ) {
-            define( 'PHOTOBLOCKS_V', '1.3.4' );
+            define( 'PHOTOBLOCKS_V', '1.3.5' );
         }
         // If this file is called directly, abort.
         if ( !defined( 'WPINC' ) ) {

@@ -201,7 +201,7 @@ foreach ( $blocks as $block ) {
     ?>
             "
             style="<?php 
-    echo $block->style();
+    echo esc_attr( $block->style() );
     ?>"
             <?php 
     ?>
@@ -298,7 +298,7 @@ foreach ( $blocks as $block ) {
                 <div class="pb-overlay" style="<?php 
         if ( $block->has_custom_overlay() ) {
             ?>background-color: <?php 
-            echo $block->get_overlay_bg();
+            echo esc_attr( $block->get_overlay_bg() );
         }
         ?>">
                     <?php 
@@ -316,7 +316,7 @@ foreach ( $blocks as $block ) {
                             <span class="pb-title pb-caption-<?php 
                     echo $block->caption_position( 'title', 'h' );
                     ?>" style="<?php 
-                    echo $block->custom_styles( 'title' );
+                    echo esc_attr( $block->custom_styles( 'title' ) );
                     ?>"><?php 
                     echo wp_kses_post( do_shortcode( $block->caption->title->text ) );
                     ?></span>
@@ -329,7 +329,7 @@ foreach ( $blocks as $block ) {
                             <span class="pb-description pb-caption-<?php 
                     echo $block->caption_position( 'description', 'h' );
                     ?>" style="<?php 
-                    echo $block->custom_styles( 'description' );
+                    echo esc_attr( $block->custom_styles( 'description' ) );
                     ?>"><?php 
                     echo wp_kses_post( do_shortcode( $block->caption->description->text ) );
                     ?></span>

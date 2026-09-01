@@ -158,17 +158,17 @@ class Photoblocks_Admin {
                                 $block[$key]['ratio'] = ( empty( $value['ratio'] ) ? 1 : floatval( $value['ratio'] ) );
                                 break;
                             case 'caption':
-                                $block[$key]['background']['color'] = ( empty( $value['background']['color'] ) ? null : sanitize_text_field( $value['background']['color'] ) );
+                                $block[$key]['background']['color'] = ( empty( $value['background']['color'] ) ? null : PhotoBlock::sanitize_color( $value['background']['color'] ) );
                                 $block[$key]['background']['opacity'] = ( empty( $value['background']['opacity'] ) ? null : sanitize_text_field( $value['background']['opacity'] ) );
                                 $block[$key]['title']['position']['v'] = ( empty( $value['title']['position']['v'] ) ? null : sanitize_text_field( $value['title']['position']['v'] ) );
                                 $block[$key]['title']['position']['h'] = ( empty( $value['title']['position']['h'] ) ? null : sanitize_text_field( $value['title']['position']['h'] ) );
                                 $block[$key]['title']['size'] = ( empty( $value['title']['size'] ) ? null : sanitize_text_field( $value['title']['size'] ) );
-                                $block[$key]['title']['color'] = ( empty( $value['title']['color'] ) ? null : sanitize_text_field( $value['title']['color'] ) );
+                                $block[$key]['title']['color'] = ( empty( $value['title']['color'] ) ? null : PhotoBlock::sanitize_color( $value['title']['color'] ) );
                                 $block[$key]['title']['text'] = ( empty( $value['title']['text'] ) ? null : sanitize_text_field( $value['title']['text'] ) );
                                 $block[$key]['description']['position']['v'] = ( empty( $value['description']['position']['v'] ) ? null : sanitize_text_field( $value['description']['position']['v'] ) );
                                 $block[$key]['description']['position']['h'] = ( empty( $value['description']['position']['h'] ) ? null : sanitize_text_field( $value['description']['position']['h'] ) );
                                 $block[$key]['description']['size'] = ( empty( $value['description']['size'] ) ? null : sanitize_text_field( $value['description']['size'] ) );
-                                $block[$key]['description']['color'] = ( empty( $value['description']['color'] ) ? null : sanitize_text_field( $value['description']['color'] ) );
+                                $block[$key]['description']['color'] = ( empty( $value['description']['color'] ) ? null : PhotoBlock::sanitize_color( $value['description']['color'] ) );
                                 $block[$key]['description']['text'] = ( empty( $value['description']['text'] ) ? null : sanitize_text_field( $value['description']['text'] ) );
                                 break;
                             case 'click':
