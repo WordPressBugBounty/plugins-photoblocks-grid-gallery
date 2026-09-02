@@ -144,6 +144,8 @@ class Photoblocks_Public {
             }
             $this->values[$atts['id']] = array_merge( $this->settings->default_values(), $gallery_values );
             $this->values[$atts['id']]['id'] = $atts['id'];
+            $social_h = ( isset( $this->values[$atts['id']]['social_position_h'] ) ? $this->values[$atts['id']]['social_position_h'] : '' );
+            $this->values[$atts['id']]['social_position_h'] = PhotoBlock::sanitize_enum( $social_h, array('left', 'center', 'right') );
             $gallery = $this->values[$atts['id']];
             foreach ( $atts as $k => $v ) {
                 $this->values[$atts['id']][$k] = $v;

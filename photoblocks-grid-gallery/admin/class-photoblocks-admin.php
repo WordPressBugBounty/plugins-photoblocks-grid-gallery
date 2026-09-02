@@ -140,6 +140,15 @@ class Photoblocks_Admin {
             if ( isset( $_POST['settings'] ) ) {
                 // Sanitize settings
                 $data = array_map( 'sanitize_text_field', json_decode( wp_unslash( $_POST['settings'] ), true ) );
+                if ( isset( $data['image_class'] ) ) {
+                    $data['image_class'] = PhotoBlock::sanitize_css_classes( $data['image_class'] );
+                }
+                if ( isset( $data['link_class'] ) ) {
+                    $data['link_class'] = PhotoBlock::sanitize_css_classes( $data['link_class'] );
+                }
+                if ( isset( $data['social_position_h'] ) ) {
+                    $data['social_position_h'] = PhotoBlock::sanitize_enum( $data['social_position_h'], array('left', 'center', 'right') );
+                }
             }
             // Sanitize blocks
             if ( isset( $_POST['blocks'] ) ) {
@@ -150,8 +159,8 @@ class Photoblocks_Admin {
                     foreach ( $block as $key => $value ) {
                         switch ( $key ) {
                             case 'image':
-                                $block[$key]['alignment']['h'] = ( empty( $value['alignment']['h'] ) ? null : sanitize_text_field( $value['alignment']['h'] ) );
-                                $block[$key]['alignment']['v'] = ( empty( $value['alignment']['v'] ) ? null : sanitize_text_field( $value['alignment']['v'] ) );
+                                $block[$key]['alignment']['h'] = ( empty( $value['alignment']['h'] ) ? null : PhotoBlock::sanitize_enum( $value['alignment']['h'], array('left', 'center', 'right') ) );
+                                $block[$key]['alignment']['v'] = ( empty( $value['alignment']['v'] ) ? null : PhotoBlock::sanitize_enum( $value['alignment']['v'], array('top', 'center', 'bottom') ) );
                                 $block[$key]['alt'] = ( empty( $value['alt'] ) ? null : sanitize_text_field( $value['alt'] ) );
                                 $block[$key]['url'] = ( empty( $value['url'] ) ? null : sanitize_url( $value['url'] ) );
                                 $block[$key]['id'] = ( empty( $value['id'] ) ? 0 : absint( $value['id'] ) );
@@ -160,13 +169,13 @@ class Photoblocks_Admin {
                             case 'caption':
                                 $block[$key]['background']['color'] = ( empty( $value['background']['color'] ) ? null : PhotoBlock::sanitize_color( $value['background']['color'] ) );
                                 $block[$key]['background']['opacity'] = ( empty( $value['background']['opacity'] ) ? null : sanitize_text_field( $value['background']['opacity'] ) );
-                                $block[$key]['title']['position']['v'] = ( empty( $value['title']['position']['v'] ) ? null : sanitize_text_field( $value['title']['position']['v'] ) );
-                                $block[$key]['title']['position']['h'] = ( empty( $value['title']['position']['h'] ) ? null : sanitize_text_field( $value['title']['position']['h'] ) );
+                                $block[$key]['title']['position']['v'] = ( empty( $value['title']['position']['v'] ) ? null : PhotoBlock::sanitize_enum( $value['title']['position']['v'], array('top', 'middle', 'bottom') ) );
+                                $block[$key]['title']['position']['h'] = ( empty( $value['title']['position']['h'] ) ? null : PhotoBlock::sanitize_enum( $value['title']['position']['h'], array('left', 'center', 'right') ) );
                                 $block[$key]['title']['size'] = ( empty( $value['title']['size'] ) ? null : sanitize_text_field( $value['title']['size'] ) );
                                 $block[$key]['title']['color'] = ( empty( $value['title']['color'] ) ? null : PhotoBlock::sanitize_color( $value['title']['color'] ) );
                                 $block[$key]['title']['text'] = ( empty( $value['title']['text'] ) ? null : sanitize_text_field( $value['title']['text'] ) );
-                                $block[$key]['description']['position']['v'] = ( empty( $value['description']['position']['v'] ) ? null : sanitize_text_field( $value['description']['position']['v'] ) );
-                                $block[$key]['description']['position']['h'] = ( empty( $value['description']['position']['h'] ) ? null : sanitize_text_field( $value['description']['position']['h'] ) );
+                                $block[$key]['description']['position']['v'] = ( empty( $value['description']['position']['v'] ) ? null : PhotoBlock::sanitize_enum( $value['description']['position']['v'], array('top', 'middle', 'bottom') ) );
+                                $block[$key]['description']['position']['h'] = ( empty( $value['description']['position']['h'] ) ? null : PhotoBlock::sanitize_enum( $value['description']['position']['h'], array('left', 'center', 'right') ) );
                                 $block[$key]['description']['size'] = ( empty( $value['description']['size'] ) ? null : sanitize_text_field( $value['description']['size'] ) );
                                 $block[$key]['description']['color'] = ( empty( $value['description']['color'] ) ? null : PhotoBlock::sanitize_color( $value['description']['color'] ) );
                                 $block[$key]['description']['text'] = ( empty( $value['description']['text'] ) ? null : sanitize_text_field( $value['description']['text'] ) );

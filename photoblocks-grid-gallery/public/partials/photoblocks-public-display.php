@@ -221,10 +221,10 @@ foreach ( $blocks as $block ) {
     if ( $block->type == "image" || $block->type == "post" ) {
         ?>
                 data-valign="<?php 
-        echo $block->valign();
+        echo esc_attr( $block->valign() );
         ?>"
                 data-halign="<?php 
-        echo $block->halign();
+        echo esc_attr( $block->halign() );
         ?>"
                 <?php 
     }
@@ -241,7 +241,7 @@ foreach ( $blocks as $block ) {
         ?>
                 <img
                     class="pb-image skip-lazy <?php 
-        echo $block->get_image_class();
+        echo esc_attr( $block->get_image_class() );
         ?>"
                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
                     data-pb-source="<?php 
@@ -265,7 +265,7 @@ foreach ( $blocks as $block ) {
         echo $block->mfp_iframe_class();
         ?>
                 <?php 
-        echo $block->get_link_class();
+        echo esc_attr( $block->get_link_class() );
         ?>"
                 <?php 
         echo $block->get_lightbox_attrs();
@@ -314,7 +314,7 @@ foreach ( $blocks as $block ) {
                 if ( $block->has_title( $position ) ) {
                     ?>
                             <span class="pb-title pb-caption-<?php 
-                    echo $block->caption_position( 'title', 'h' );
+                    echo esc_attr( $block->caption_position( 'title', 'h' ) );
                     ?>" style="<?php 
                     echo esc_attr( $block->custom_styles( 'title' ) );
                     ?>"><?php 
@@ -327,7 +327,7 @@ foreach ( $blocks as $block ) {
                 if ( $block->has_description( $position ) ) {
                     ?>
                             <span class="pb-description pb-caption-<?php 
-                    echo $block->caption_position( 'description', 'h' );
+                    echo esc_attr( $block->caption_position( 'description', 'h' ) );
                     ?>" style="<?php 
                     echo esc_attr( $block->custom_styles( 'description' ) );
                     ?>"><?php 
@@ -340,7 +340,7 @@ foreach ( $blocks as $block ) {
                 if ( ($block->type == "image" || $block->type == "post") && $block->has_any_social_here( $position ) ) {
                     ?>
                             <span class="pb-social pb-social-<?php 
-                    echo $gallery['social_position_h'];
+                    echo esc_attr( $gallery['social_position_h'] );
                     ?>">
                                 <?php 
                     foreach ( $block->list_social() as $item ) {

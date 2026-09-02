@@ -20,16 +20,7 @@ class PhotoBlock {
 
 	public $gallery_id;
 
-	/**
-	 * Validate a value against the set of CSS color syntaxes we support
-	 * (hex, rgb()/rgba(), hsl()/hsla(), keyword). Anything that doesn't
-	 * match one of these strict allow-list patterns is rejected outright,
-	 * since a CSS color has no legitimate use for quotes, semicolons,
-	 * parens with arbitrary content, etc.
-	 *
-	 * @param mixed $value
-	 * @return string Sanitized color, or '' if invalid.
-	 */
+	// Allow-list: hex, rgb()/rgba()/hsl()/hsla(), keyword. Anything else returns ''.
 	public static function sanitize_color( $value ) {
 		if ( ! is_string( $value ) ) {
 			return '';
@@ -54,6 +45,26 @@ class PhotoBlock {
 		}
 
 		return '';
+	}
+
+	// Rejects anything not exactly in $allowed (e.g. alignment/position keywords).
+	public static function sanitize_enum( $value, array $allowed ) {
+		if ( ! is_string( $value ) ) {
+			return '';
+		}
+
+		return in_array( $value, $allowed, true ) ? $value : '';
+	}
+
+	// Space-separated CSS class list; strips anything not a valid class token.
+	public static function sanitize_css_classes( $value ) {
+		if ( ! is_string( $value ) ) {
+			return '';
+		}
+
+		$classes = array_map( 'sanitize_html_class', explode( ' ', $value ) );
+
+		return trim( implode( ' ', array_filter( $classes ) ) );
 	}
 
 	public function __construct( $gallery, $data, $settings ) {
@@ -98,10 +109,13 @@ class PhotoBlock {
 	}
 
 	public function caption_position( $field, $axis ) {
-		 //print "\n\n<< $field $axis >>\n\n";
+		$allowed = ( $axis === 'v' ) ? array( 'top', 'middle', 'bottom' ) : array( 'left', 'center', 'right' );
 
-		if ( $this->caption->{$field}->position->{$axis} ) {
-			return $this->caption->{$field}->position->{$axis};
+		$raw   = isset( $this->caption->{$field}->position->{$axis} ) ? $this->caption->{$field}->position->{$axis} : '';
+		$value = self::sanitize_enum( $raw, $allowed );
+
+		if ( $value !== '' ) {
+			return $value;
 		}
 
 		$f = 'caption_' . $field . '_position_' . $axis;
@@ -110,9 +124,7 @@ class PhotoBlock {
 			$f = 'block_text_' . $field . '_position_' . $axis;
 		}
 
-		//print "\n\n|| $f {$this->settings->get($this->gallery, $f)} ||\n\n";
-
-		return $this->settings->get( $this->gallery, $f );
+		return self::sanitize_enum( $this->settings->get( $this->gallery, $f ), $allowed );
 	}
 
 	public function has_captions_or_social( $where = null ) {
@@ -238,11 +250,27 @@ class PhotoBlock {
 	}
 
 	public function valign() {
-		return $this->image->alignment->v ? $this->image->alignment->v : $this->gallery['image_alignment_v'];
+		$raw = isset( $this->image->alignment->v ) ? $this->image->alignment->v : '';
+		$v   = self::sanitize_enum( $raw, array( 'top', 'center', 'bottom' ) );
+
+		if ( $v === '' ) {
+			$fallback = isset( $this->gallery['image_alignment_v'] ) ? $this->gallery['image_alignment_v'] : '';
+			$v        = self::sanitize_enum( $fallback, array( 'top', 'center', 'bottom' ) );
+		}
+
+		return $v;
 	}
 
 	public function halign() {
-		return $this->image->alignment->h ? $this->image->alignment->h : $this->gallery['image_alignment_h'];
+		$raw = isset( $this->image->alignment->h ) ? $this->image->alignment->h : '';
+		$h   = self::sanitize_enum( $raw, array( 'left', 'center', 'right' ) );
+
+		if ( $h === '' ) {
+			$fallback = isset( $this->gallery['image_alignment_h'] ) ? $this->gallery['image_alignment_h'] : '';
+			$h        = self::sanitize_enum( $fallback, array( 'left', 'center', 'right' ) );
+		}
+
+		return $h;
 	}
 
 	public function style() {
@@ -367,7 +395,7 @@ class PhotoBlock {
 
 	public function get_image_class() {
 		if ( isset( $this->gallery['image_class'] ) ) {
-			return $this->gallery['image_class'];
+			return self::sanitize_css_classes( $this->gallery['image_class'] );
 		}
 
 		return '';
@@ -392,7 +420,7 @@ class PhotoBlock {
 
 	public function get_link_class() {
 		if ( isset( $this->gallery['link_class'] ) ) {
-			return $this->gallery['link_class'];
+			return self::sanitize_css_classes( $this->gallery['link_class'] );
 		}
 
 		return '';
