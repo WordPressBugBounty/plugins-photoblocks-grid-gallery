@@ -149,6 +149,30 @@ class Photoblocks_Admin {
                 if ( isset( $data['social_position_h'] ) ) {
                     $data['social_position_h'] = PhotoBlock::sanitize_enum( $data['social_position_h'], array('left', 'center', 'right') );
                 }
+                if ( isset( $data['caption_effect'] ) ) {
+                    $data['caption_effect'] = PhotoBlock::sanitize_enum( $data['caption_effect'], $this->settings->get_field_values( 'caption_effect' ) );
+                }
+                if ( isset( $data['loading_effect'] ) ) {
+                    $data['loading_effect'] = PhotoBlock::sanitize_enum( $data['loading_effect'], $this->settings->get_field_values( 'loading_effect' ) );
+                }
+                if ( isset( $data['columns'] ) ) {
+                    $data['columns'] = absint( $data['columns'] );
+                }
+                if ( isset( $data['padding'] ) ) {
+                    $data['padding'] = absint( $data['padding'] );
+                }
+                if ( isset( $data['disable_below'] ) ) {
+                    $data['disable_below'] = absint( $data['disable_below'] );
+                }
+                if ( isset( $data['mobile_layout'] ) ) {
+                    $data['mobile_layout'] = PhotoBlock::sanitize_json_array( $data['mobile_layout'] );
+                }
+                if ( isset( $data['fancybox_transition'] ) ) {
+                    $data['fancybox_transition'] = PhotoBlock::sanitize_enum( $data['fancybox_transition'], $this->settings->get_field_values( 'fancybox_transition' ) );
+                }
+                if ( isset( $data['fancybox_animation'] ) ) {
+                    $data['fancybox_animation'] = PhotoBlock::sanitize_enum( $data['fancybox_animation'], $this->settings->get_field_values( 'fancybox_animation' ) );
+                }
             }
             // Sanitize blocks
             if ( isset( $_POST['blocks'] ) ) {

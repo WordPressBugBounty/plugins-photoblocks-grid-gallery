@@ -132,6 +132,18 @@ class Photoblocks_Settings {
         return $this->fields[$section][$group]['fields'][$code];
     }
 
+    // Allowed keys of a 'select'-type field, straight from its schema definition.
+    public function get_field_values( $field ) {
+        foreach ( $this->fields as $section ) {
+            foreach ( $section as $group ) {
+                if ( isset( $group['fields'][$field]['values'] ) ) {
+                    return array_keys( $group['fields'][$field]['values'] );
+                }
+            }
+        }
+        return array();
+    }
+
     /**
      * Get a setting value from a gallery and check if the
      * gallery value is valid based on the current user plan

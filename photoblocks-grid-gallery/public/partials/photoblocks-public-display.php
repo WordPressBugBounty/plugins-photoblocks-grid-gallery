@@ -155,9 +155,9 @@ echo $this->hover_options_classes( $data_id );
 ?> <?php 
 echo $this->css_classes( $data_id );
 ?> pb-effect-<?php 
-echo $this->caption_effect( $data_id );
+echo esc_attr( $this->caption_effect( $data_id ) );
 ?>" data-anim="<?php 
-echo $this->loading_effect( $data_id );
+echo esc_attr( $this->loading_effect( $data_id ) );
 ?>" id="photoblocks-<?php 
 echo absint( $data_id );
 ?>">
@@ -427,10 +427,10 @@ echo $gallery['custom_event_refresh'];
 ?> }
         },
         <?php 
-$mobile = $this->settings->get( $this->values[$data_id], "mobile_layout" );
+$mobile = PhotoBlock::sanitize_json_array( $this->settings->get( $this->values[$data_id], "mobile_layout" ) );
 ?>
         mobile_layout: <?php 
-echo ( empty( $mobile ) ? "[]" : $mobile );
+echo $mobile;
 ?>,
         lazy: <?php 
 echo ( $this->settings->get( $this->values[$data_id], "lazy" ) == "1" ? "true" : "false" );
@@ -475,10 +475,10 @@ if ( $this->lightbox( $data_id ) == 'fancybox' ) {
     echo $this->fancybox_buttons( $data_id );
     ?>],
         transitionEffect: "<?php 
-    echo $gallery['fancybox_transition'];
+    echo esc_js( $gallery['fancybox_transition'] );
     ?>",
         animationEffect : "<?php 
-    echo $gallery['fancybox_animation'];
+    echo esc_js( $gallery['fancybox_animation'] );
     ?>",
         baseClass: "photoblocks-fancybox-<?php 
     echo absint( $data_id );

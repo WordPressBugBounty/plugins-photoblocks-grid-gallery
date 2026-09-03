@@ -67,6 +67,21 @@ class PhotoBlock {
 		return trim( implode( ' ', array_filter( $classes ) ) );
 	}
 
+	// Re-serializes as JSON only if the value decodes to an array; otherwise '[]'.
+	public static function sanitize_json_array( $value ) {
+		if ( ! is_string( $value ) || $value === '' ) {
+			return '[]';
+		}
+
+		$decoded = json_decode( $value, true );
+
+		if ( ! is_array( $decoded ) ) {
+			return '[]';
+		}
+
+		return wp_json_encode( $decoded );
+	}
+
 	public function __construct( $gallery, $data, $settings ) {
 		$this->gallery  = $gallery;
 		$this->settings = $settings;

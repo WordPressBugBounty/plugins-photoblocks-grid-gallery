@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns
 Tags: gallery, grid gallery, best gallery plugin, free gallery, gallery plugin, gallery grid plugin, masonry, photo gallery, image gallery, social gallery, portfolio gallery, lightbox, justified gallery
 Requires at least: 5.2
 Tested up to: 7.1
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -125,6 +125,18 @@ Currently galleries made with Envira, FooGallery, Instagram, NextGen, JetPack, M
 Please report security bugs found in the source code of the Gallery PhotoBlocks plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fb4cb-6edd-4ea1-ae4f-dea4773f868f). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin."
 
 == Changelog ==
+= 1.3.7 - 09/03/2026 =
+Fixed: Security update.
+
+= 1.3.6 - 09/02/2026 =
+Fixed: Security update.
+
+= 1.3.5 - 09/01/2026 =
+Fixed: Security update.
+
+= 1.3.4 - 06/11/2026 =
+Fixed: PHP warning on certain request types.
+
 = 1.3.3 - 01/16/2026 =
 Fixed: Security update.
 

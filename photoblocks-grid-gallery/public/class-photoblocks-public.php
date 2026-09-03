@@ -146,6 +146,17 @@ class Photoblocks_Public {
             $this->values[$atts['id']]['id'] = $atts['id'];
             $social_h = ( isset( $this->values[$atts['id']]['social_position_h'] ) ? $this->values[$atts['id']]['social_position_h'] : '' );
             $this->values[$atts['id']]['social_position_h'] = PhotoBlock::sanitize_enum( $social_h, array('left', 'center', 'right') );
+            $caption_effect = ( isset( $this->values[$atts['id']]['caption_effect'] ) ? $this->values[$atts['id']]['caption_effect'] : '' );
+            $this->values[$atts['id']]['caption_effect'] = PhotoBlock::sanitize_enum( $caption_effect, $this->settings->get_field_values( 'caption_effect' ) );
+            $loading_effect = ( isset( $this->values[$atts['id']]['loading_effect'] ) ? $this->values[$atts['id']]['loading_effect'] : '' );
+            $this->values[$atts['id']]['loading_effect'] = PhotoBlock::sanitize_enum( $loading_effect, $this->settings->get_field_values( 'loading_effect' ) );
+            $this->values[$atts['id']]['columns'] = absint( ( isset( $this->values[$atts['id']]['columns'] ) ? $this->values[$atts['id']]['columns'] : 0 ) );
+            $this->values[$atts['id']]['padding'] = absint( ( isset( $this->values[$atts['id']]['padding'] ) ? $this->values[$atts['id']]['padding'] : 0 ) );
+            $this->values[$atts['id']]['disable_below'] = absint( ( isset( $this->values[$atts['id']]['disable_below'] ) ? $this->values[$atts['id']]['disable_below'] : 0 ) );
+            $fancybox_transition = ( isset( $this->values[$atts['id']]['fancybox_transition'] ) ? $this->values[$atts['id']]['fancybox_transition'] : '' );
+            $this->values[$atts['id']]['fancybox_transition'] = PhotoBlock::sanitize_enum( $fancybox_transition, $this->settings->get_field_values( 'fancybox_transition' ) );
+            $fancybox_animation = ( isset( $this->values[$atts['id']]['fancybox_animation'] ) ? $this->values[$atts['id']]['fancybox_animation'] : '' );
+            $this->values[$atts['id']]['fancybox_animation'] = PhotoBlock::sanitize_enum( $fancybox_animation, $this->settings->get_field_values( 'fancybox_animation' ) );
             $gallery = $this->values[$atts['id']];
             foreach ( $atts as $k => $v ) {
                 $this->values[$atts['id']][$k] = $v;
