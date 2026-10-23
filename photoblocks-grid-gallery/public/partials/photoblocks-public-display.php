@@ -109,7 +109,7 @@ echo absint( $data_id );
 echo absint( $data_id );
 ?>.pb-lift .pb-block.pb-type-image.with-text:hover {
         box-shadow: <?php 
-echo $this->settings->get( $this->values[$data_id], "caption_background_color" );
+echo esc_html( $this->settings->get( $this->values[$data_id], "caption_background_color" ) );
 ?> 0 0 20px;
     }
     #photoblocks-<?php 
@@ -141,12 +141,12 @@ $this->css(
     <?php 
 ?>
     <?php 
-echo $this->settings->get( $this->values[$data_id], "custom_css" );
+echo wp_strip_all_tags( $this->settings->get( $this->values[$data_id], "custom_css" ) );
 ?>
     #photoblocks-<?php 
 echo absint( $data_id );
 ?> .pb-blocks .pb-type-image {<?php 
-echo "max-width: calc( 100% - {$gallery['padding']}px )";
+echo 'max-width: calc( 100% - ' . absint( $gallery['padding'] ) . 'px )';
 ?>}
 
 </style>
@@ -407,13 +407,13 @@ jQuery(function () {
 echo absint( $data_id );
 ?>",
         columns: <?php 
-echo $gallery['columns'];
+echo absint( $gallery['columns'] );
 ?>,
         padding: <?php 
-echo $gallery['padding'];
+echo absint( $gallery['padding'] );
 ?>,
         disable_below: <?php 
-echo $gallery['disable_below'];
+echo absint( $gallery['disable_below'] );
 ?>,
         on: {
             before: function () { <?php 

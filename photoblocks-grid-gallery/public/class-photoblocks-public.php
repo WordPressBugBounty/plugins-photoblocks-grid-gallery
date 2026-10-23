@@ -132,7 +132,8 @@ class Photoblocks_Public {
      */
     public function shortcode_handler( $atts ) {
         global $wpdb;
-        $atts['id'] = absint( $atts['id'] );
+        $atts = (array) $atts;
+        $atts['id'] = absint( ( isset( $atts['id'] ) ? $atts['id'] : 0 ) );
         $data = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->photoblocks . ' WHERE id=%d', intval( $atts['id'] ) ), ARRAY_A );
         if ( $data == null ) {
             return "<small class='pb-gallery-error'>No gallery found with ID " . $atts['id'] . '</small>';
@@ -144,6 +145,20 @@ class Photoblocks_Public {
             }
             $this->values[$atts['id']] = array_merge( $this->settings->default_values(), $gallery_values );
             $this->values[$atts['id']]['id'] = $atts['id'];
+            // Shortcode attributes can be set by contributors, so they must never override raw JS/CSS settings.
+            $blocked_atts = array(
+                'id',
+                'custom_event_before',
+                'custom_event_after',
+                'custom_event_refresh',
+                'custom_css'
+            );
+            foreach ( $atts as $k => $v ) {
+                if ( in_array( $k, $blocked_atts, true ) ) {
+                    continue;
+                }
+                $this->values[$atts['id']][$k] = sanitize_text_field( $v );
+            }
             $social_h = ( isset( $this->values[$atts['id']]['social_position_h'] ) ? $this->values[$atts['id']]['social_position_h'] : '' );
             $this->values[$atts['id']]['social_position_h'] = PhotoBlock::sanitize_enum( $social_h, array('left', 'center', 'right') );
             $caption_effect = ( isset( $this->values[$atts['id']]['caption_effect'] ) ? $this->values[$atts['id']]['caption_effect'] : '' );
@@ -158,10 +173,6 @@ class Photoblocks_Public {
             $fancybox_animation = ( isset( $this->values[$atts['id']]['fancybox_animation'] ) ? $this->values[$atts['id']]['fancybox_animation'] : '' );
             $this->values[$atts['id']]['fancybox_animation'] = PhotoBlock::sanitize_enum( $fancybox_animation, $this->settings->get_field_values( 'fancybox_animation' ) );
             $gallery = $this->values[$atts['id']];
-            foreach ( $atts as $k => $v ) {
-                $this->values[$atts['id']][$k] = $v;
-                $gallery[$k] = $v;
-            }
             if ( $this->lightbox( $atts['id'] ) == 'fancybox' ) {
                 wp_enqueue_script(
                     'fancybox3',
